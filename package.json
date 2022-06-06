@@ -1,0 +1,28 @@
+{
+  "name": "flextube",
+  "version": "1.0.0",
+  "description": "It's review of wetube clone",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jaylim92/flextube-review.git"
+  },
+  "scripts": {
+    "dev": "nodemon --exec babel-node index.js"
+  },
+  "author": "JayLim",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jaylim92/flextube-review/issues"
+  },
+  "homepage": "https://github.com/jaylim92/flextube-review#readme",
+  "dependencies": {
+    "express": "^4.18.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.18.2",
+    "@babel/node": "^7.17.10",
+    "@babel/preset-env": "^7.18.2",
+    "nodemon": "^2.0.16"
+  }
+}
