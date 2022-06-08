@@ -8,7 +8,7 @@
     "url": "git+https://github.com/jaylim92/flextube-review.git"
   },
   "scripts": {
-    "dev": "nodemon --exec babel-node index.js"
+    "dev": "nodemon --exec babel-node src/server.js"
   },
   "author": "JayLim",
   "license": "MIT",
@@ -17,7 +17,8 @@
   },
   "homepage": "https://github.com/jaylim92/flextube-review#readme",
   "dependencies": {
-    "express": "^4.18.1"
+    "express": "^4.18.1",
+    "morgan": "^1.10.0"
   },
   "devDependencies": {
     "@babel/core": "^7.18.2",
