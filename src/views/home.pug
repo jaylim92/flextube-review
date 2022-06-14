@@ -2,3 +2,8 @@ extend base.pug
 
 block content 
     h2 Welcome you will see trending videos
+    ul
+        each video in videos
+            li=video
+        else 
+            li sorry Notiong found.
