@@ -1,9 +1,9 @@
 export const trending = (req, res) => {
-  return res.render("home");
+  return res.render("home", { pageTitle: "Home" });
 };
 
 export const watch = (req, res) => {
-  return res.render("watch");
+  return res.render("watch", { pageTitle: "Watch" });
 };
 
 export const editVideo = (req, res) => res.render("edit");
