@@ -6,9 +6,7 @@ export const watch = (req, res) => {
   return res.render("watch");
 };
 
-export const editVideo = (req, res) => {
-  return res.send("edit video");
-};
+export const editVideo = (req, res) => res.render("edit");
 
 export const search = (req, res) => {
   return res.send("search");
