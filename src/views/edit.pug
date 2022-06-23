@@ -2,4 +2,7 @@ extend base.pug
 
 
 block content 
-    h1 edit Video
+    h4 Edit your video
+    form(method="POST") 
+        input(name="title",placeholder="put video title" value=`${video.title}`)
+        input(value="Save", type="submit") 
