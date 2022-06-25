@@ -37,7 +37,7 @@ export const watch = (req, res) => {
   const { id } = req.params;
   const video = videos[id];
   return res.render("watch", {
-    pageTitle: `Watching ${video.title}`,
+    pageTitle: `Watching: ${video.title}`,
     fakeUser,
     video,
   });
@@ -52,7 +52,7 @@ export const getEdit = (req, res) => {
 export const postEdit = (req, res) => {
   const { id } = req.params;
   const { title } = req.body;
-  console.log(title);
+  videos[id].title = title;
   return res.redirect(`/videos/${id}`);
 };
 
@@ -60,6 +60,22 @@ export const search = (req, res) => {
   return res.send("search");
 };
 
-export const upload = (req, res) => res.send("upload video");
+export const getUpload = (req, res) => {
+  return res.render("upload", { fakeUser });
+};
+
+export const postUpload = (req, res) => {
+  const { title } = req.body;
+  const upload = {
+    title,
+    rating: 0,
+    comments: 3,
+    createAt: "just now",
+    views: 1,
+    id: videos.length + 1,
+  };
+  videos.push(upload);
+  return res.redirect("/");
+};
 
 export const deleteVideo = (req, res) => res.send("delete Video");
