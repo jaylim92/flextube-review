@@ -8,9 +8,9 @@ const fakeUser = {
 export const home = async (req, res) => {
   try {
     const videos = await Video.find({});
-    return res.render("home", { pageTitle: "Home", fakeUser, videos });
+    res.render("home", { pageTitle: "Home", fakeUser, videos });
   } catch (error) {
-    return res.send("error");
+    res.send("error");
   }
 };
 
@@ -39,7 +39,18 @@ export const getUpload = (req, res) => {
   return res.render("upload", { fakeUser });
 };
 
-export const postUpload = (req, res) => {
-  const { title } = req.body;
-  return res.redirect("/");
+export const postUpload = async (req, res) => {
+  const { title, description, hashtags } = req.body;
+  try {
+    await Video.create({
+      title,
+      description,
+      hashtags: hashtags.split(",").map((word) => `#${word}`),
+    });
+    return res.redirect("/");
+  } catch (error) {
+    const errorMessage = error._message;
+    console.log(errorMessage);
+    return res.render("upload", { fakeUser, errorMessage });
+  }
 };
