@@ -1,43 +1,23 @@
+import Video from "../models/Video";
+
 const fakeUser = {
   name: "Jay",
   loggedIn: true,
 };
-let videos = [
-  {
-    title: "HELLO",
-    rating: 5,
-    comment: 2,
-    createAt: "1 hours ago",
-    views: 59,
-    id: 0,
-  },
-  {
-    title: "COOL",
-    rating: 5,
-    comment: 2,
-    createAt: "1 hours ago",
-    views: 59,
-    id: 1,
-  },
-  {
-    title: "I know what you've done before",
-    rating: 5,
-    comment: 5,
-    createAt: "1 hours ago",
-    views: 59,
-    id: 2,
-  },
-];
 
-export const trending = (req, res) => {
-  return res.render("home", { pageTitle: "Home", fakeUser, videos });
+export const home = async (req, res) => {
+  try {
+    const videos = await Video.find({});
+    return res.render("home", { pageTitle: "Home", fakeUser, videos });
+  } catch (error) {
+    return res.send("error");
+  }
 };
 
 export const watch = (req, res) => {
   const { id } = req.params;
-  const video = videos[id];
   return res.render("watch", {
-    pageTitle: `Watching: ${video.title}`,
+    pageTitle: `Watching`,
     fakeUser,
     video,
   });
@@ -45,8 +25,7 @@ export const watch = (req, res) => {
 
 export const getEdit = (req, res) => {
   const { id } = req.params;
-  const video = videos[id];
-  return res.render("edit", { fakeUser, pageTitle: "Edit Video", video });
+  return res.render("edit", { fakeUser, pageTitle: "Edit Video" });
 };
 
 export const postEdit = (req, res) => {
@@ -56,26 +35,11 @@ export const postEdit = (req, res) => {
   return res.redirect(`/videos/${id}`);
 };
 
-export const search = (req, res) => {
-  return res.send("search");
-};
-
 export const getUpload = (req, res) => {
   return res.render("upload", { fakeUser });
 };
 
 export const postUpload = (req, res) => {
   const { title } = req.body;
-  const upload = {
-    title,
-    rating: 0,
-    comments: 3,
-    createAt: "just now",
-    views: 1,
-    id: videos.length + 1,
-  };
-  videos.push(upload);
   return res.redirect("/");
 };
-
-export const deleteVideo = (req, res) => res.send("delete Video");
