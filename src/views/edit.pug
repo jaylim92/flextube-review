@@ -3,6 +3,10 @@ extend base.pug
 
 block content 
     h4 Edit your video
+    if errorMessage 
+        span=errorMessage
     form(method="POST") 
         input(name="title",placeholder="put video title" value=`${video.title}`)
+        input(name="description",type="text", placeholder="description", value=video.description, required)
+        input(name="hashtags",type="text", placeholder="Hashtages, #으로 구분하세요",value=video.hashtags.join() required)
         input(value="Save", type="submit") 

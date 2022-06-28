@@ -7,17 +7,10 @@ html(lang="ko")
         header
             h1 
                 a(href="/") FLEXTUBE  
-            small Hello #{fakeUser.name}
             nav 
                 ul
                     li 
                         a(href="/videos/upload") Upload Video 
-                    if fakeUser.loggedIn
-                        li 
-                            a(href="/Login") Log Out
-                    else 
-                        li  
-                            a(href="/login") Login
             h1=pageTitle 
         main 
             block content

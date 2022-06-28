@@ -1,42 +1,56 @@
 import Video from "../models/Video";
 
-const fakeUser = {
-  name: "Jay",
-  loggedIn: true,
-};
-
 export const home = async (req, res) => {
   try {
     const videos = await Video.find({});
-    res.render("home", { pageTitle: "Home", fakeUser, videos });
+    res.render("home", { pageTitle: "Home", videos });
   } catch (error) {
     res.send("error");
   }
 };
 
-export const watch = (req, res) => {
+export const watch = async (req, res) => {
   const { id } = req.params;
+  const video = await Video.findById(id);
+  if (!video) {
+    return res.render("404", { pageTitle: "Video Not Found" });
+  }
   return res.render("watch", {
-    pageTitle: `Watching`,
-    fakeUser,
+    pageTitle: `Watching: ${video.title}`,
     video,
   });
 };
 
-export const getEdit = (req, res) => {
+export const getEdit = async (req, res) => {
   const { id } = req.params;
-  return res.render("edit", { fakeUser, pageTitle: "Edit Video" });
+  const video = await Video.findById(id);
+  return res.render("edit", { pageTitle: "Edit Video", video });
 };
 
-export const postEdit = (req, res) => {
+export const postEdit = async (req, res) => {
   const { id } = req.params;
-  const { title } = req.body;
-  videos[id].title = title;
-  return res.redirect(`/videos/${id}`);
+  const { title, description, hashtags } = req.body;
+  const video = await Video.exists({ _id: id });
+  if (!video) {
+    return res.render("404", { pageTitle: "Video Not Found" });
+  }
+  try {
+    await Video.findByIdAndUpdate(id, {
+      title,
+      description,
+      hashtags: hashtags
+        .split(",")
+        .map((word) => (word.startsWith(`#`) ? word : `#${word}`)),
+    });
+    return res.redirect(`/videos/${id}`);
+  } catch (error) {
+    const errorMessage = error._message;
+    return res.render("edit", { errorMessage });
+  }
 };
 
 export const getUpload = (req, res) => {
-  return res.render("upload", { fakeUser });
+  return res.render("upload");
 };
 
 export const postUpload = async (req, res) => {
@@ -51,6 +65,6 @@ export const postUpload = async (req, res) => {
   } catch (error) {
     const errorMessage = error._message;
     console.log(errorMessage);
-    return res.render("upload", { fakeUser, errorMessage });
+    return res.render("upload", { errorMessage });
   }
 };
