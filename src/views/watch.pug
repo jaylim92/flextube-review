@@ -4,4 +4,5 @@ block content
     p=video.description
     small=video.createAt
     hr
-    a(href=`${video.id}/edit`) Edit &rarr;
+    input(type="button", value="Edit" ,onclick = `location.href='${video.id}/edit'`)
+    input(type="button",value='Delete',onclick =`location.href='${video.id}/delete'`) 

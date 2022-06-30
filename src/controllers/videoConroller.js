@@ -21,6 +21,19 @@ export const watch = async (req, res) => {
   });
 };
 
+export const search = async (req, res) => {
+  const { keyword } = req.query;
+  let videos = [];
+  if (keyword) {
+    videos = await Video.find({
+      title: {
+        $regex: new RegExp(keyword, "i"),
+      },
+    });
+  }
+  return res.render("search", { pageTitle: "Search", videos });
+};
+
 export const getEdit = async (req, res) => {
   const { id } = req.params;
   const video = await Video.findById(id);
@@ -38,9 +51,7 @@ export const postEdit = async (req, res) => {
     await Video.findByIdAndUpdate(id, {
       title,
       description,
-      hashtags: hashtags
-        .split(",")
-        .map((word) => (word.startsWith(`#`) ? word : `#${word}`)),
+      hashtags: Video.formatHashtags(hashtags),
     });
     return res.redirect(`/videos/${id}`);
   } catch (error) {
@@ -59,7 +70,7 @@ export const postUpload = async (req, res) => {
     await Video.create({
       title,
       description,
-      hashtags: hashtags.split(",").map((word) => `#${word}`),
+      hashtags: Video.formatHashtags(hashtags),
     });
     return res.redirect("/");
   } catch (error) {
@@ -67,4 +78,10 @@ export const postUpload = async (req, res) => {
     console.log(errorMessage);
     return res.render("upload", { errorMessage });
   }
+};
+
+export const getDelete = async (req, res) => {
+  const { id } = req.params;
+  await Video.findByIdAndDelete(id);
+  return res.redirect("/");
 };
