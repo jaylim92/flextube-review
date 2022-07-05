@@ -1,20 +1,28 @@
 doctype html
 html(lang="ko")
     head
-        title #{pageTitle} | Flextube
+        title #{pageTitle} | #{website}
         link(rel="stylesheet" href="https://unpkg.com/mvp.css")    
     body
         header
             h1 
-                a(href="/") FLEXTUBE  
+                a(href="/") #{website}  
             nav 
                 ul
                     li 
                         a(href="/videos/upload") Upload Video 
                     li 
                         a(href="/search") Search
-                    li 
-                        a(href="/join") Join
+                    if !loggedIn
+                        li 
+                            a(href="/join") Join
+                        li
+                            a(href="/login") Login
+                    else 
+                        li 
+                            a(href="/logout") Logout 
+                        li
+                            a(href="/user-profile") #{loggedInUser.name}의 profile
             h1=pageTitle 
         main 
             block content
