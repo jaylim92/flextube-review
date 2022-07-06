@@ -1,5 +1,6 @@
 import express from "express";
 import morgan from "morgan";
+import MongoStore from "connect-mongo";
 import rootRouter from "./routers/rootRouter";
 import videoRouter from "./routers/videoRouter";
 import userRouter from "./routers/userRouter";
@@ -20,6 +21,9 @@ app.use(
     secret: "good",
     resave: true,
     saveUninitialized: true,
+    store: MongoStore.create({
+      mongoUrl: "mongodb://127.0.0.1:27017/flextube",
+    }),
   })
 );
 
