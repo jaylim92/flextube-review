@@ -1,6 +1,7 @@
 import User from "../models/User";
 import bcrypt from "bcrypt";
 import fetch from "cross-fetch";
+import session from "express-session";
 
 export const getJoin = (req, res) => {
   return res.render("join", { pageTitle: "Join" });
@@ -205,12 +206,46 @@ export const logout = (req, res) => {
   return res.redirect("/");
 };
 
-export const see = (req, res) => res.send("see user");
-
-export const editUser = (req, res) => {
-  return res.send("edit user");
+export const getEditUser = (req, res) => {
+  return res.render("edit-user", { pageTitle: "Edit Profile" });
 };
 
+export const postEditUser = async (req, res) => {
+  const {
+    session: {
+      user: { _id, username: sessionUsername, email: sessionEmail },
+    },
+    body: { email, username, name, location },
+  } = req;
+  let serchParams = [];
+  if (sessionEmail !== email) {
+    serchParams.push({ email });
+  }
+  if (sessionUsername !== username) {
+    serchParams.push({ username });
+  }
+  if (serchParams.length > 0) {
+    const foundUser = await User.findOne({ $or: serchParams });
+    if (foundUser && foundUser._id.toString() !== _id) {
+      return res.render("edit-user", {
+        pageTitle: "Edit Profile",
+        errorMessage: "Username/Email exist already",
+      });
+    }
+  }
+  const updateUser = await User.findByIdAndUpdate(
+    _id,
+    {
+      name,
+      email,
+      username,
+      location,
+    },
+    { new: true }
+  );
+  req.session.user = updateUser;
+  return res.redirect("/edit");
+};
 export const userDelete = (req, res) => {
   return res.send("remove");
 };

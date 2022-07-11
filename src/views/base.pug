@@ -10,19 +10,21 @@ html(lang="ko")
             nav 
                 ul
                     li 
-                        a(href="/videos/upload") Upload Video 
-                    li 
                         a(href="/search") Search
                     if !loggedIn
                         li 
                             a(href="/join") Join
                         li
                             a(href="/login") Login
-                    else 
+                    else
                         li 
-                            a(href="/users/logout") Logout 
+                            a(href="/videos/upload") Upload Video 
+                        li 
+                            a(href="/users/edit") Edit Profile 
                         li
                             a(href="/user-profile") #{loggedInUser.name}의 profile
+                        li 
+                            a(href="/users/logout") Logout 
             h1=pageTitle 
         main 
             block content
